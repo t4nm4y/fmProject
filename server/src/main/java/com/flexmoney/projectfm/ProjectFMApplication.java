@@ -1,0 +1,13 @@
+package com.flexmoney.projectfm;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ProjectFMApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ProjectFMApplication.class, args);
+	}
+
+}

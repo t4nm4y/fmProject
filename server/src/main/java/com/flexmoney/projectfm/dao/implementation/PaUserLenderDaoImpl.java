@@ -24,7 +24,7 @@ public class PaUserLenderDaoImpl implements PaUserLenderDao {
     public String getTwoFaValue(Integer mobile, Integer lender_id) {
         try {
             return jdbcTemplate.queryForObject(
-                    "SELECT two_fa_value FROM pa_user_lender WHERE mobile=? AND lender_id=?",
+                    "SELECT two_fa_value FROM pa_users WHERE mobile=? AND lender_id=?",
                     String.class,
                     mobile, lender_id);
         } catch (EmptyResultDataAccessException e) {

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 @RestController
 public class TransactionController {
@@ -18,5 +19,12 @@ public class TransactionController {
     @PostMapping("/initSession")
     public String initSession(@RequestBody Integer mobile, BigDecimal amount){
        return transactionService.initSession(mobile, amount);
+    }
+
+    @PostMapping("/getLenders")
+    public String getLenders(@RequestBody Map<String, Object> request){
+        Integer mobile = (Integer) request.get("mobile");
+        BigDecimal amount = new BigDecimal(request.get("amount").toString());
+        return transactionService.getLenders(mobile, amount);
     }
 }

@@ -33,8 +33,7 @@ public class PaUserLenderDaoImpl implements PaUserLenderDao {
     }
 
     @Override
-    public String getTwoFaValue(Integer mobile, Integer lender_id) {
-        try {
+    public String getTwoFaValue(String mobile, Integer lender_id) {
             MapSqlParameterSource params=new MapSqlParameterSource();
             params.addValue("mobile", mobile);
             params.addValue("lender_id", lender_id);
@@ -42,8 +41,5 @@ public class PaUserLenderDaoImpl implements PaUserLenderDao {
             return namedParameterJdbcTemplate.queryForObject(
                     "SELECT two_fa_value FROM pa_users WHERE mobile=:mobile AND lender_id=:lender_id",
                     params, String.class);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
     }
 }

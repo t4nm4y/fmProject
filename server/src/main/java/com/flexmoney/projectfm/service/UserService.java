@@ -37,13 +37,11 @@ public class UserService {
     public String addUser(User user) {
         return usersDao.addUser(user) + " added successfully";
     }
-
     public String addPaUser(PaUserLender paUserLender){
         if(!usersDao.doesUserExist(paUserLender.getMobile())) return "User does not exist";
         return paUserLenderDao.addPaLender(paUserLender)+"added successfully";
     }
-
-    public String deleteUser(Integer mobile){
+    public String deleteUser(String mobile){
         return usersDao.deleteUser(mobile);
     }
 

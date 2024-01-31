@@ -4,6 +4,7 @@ import com.flexmoney.projectfm.model.PaUserLender;
 import com.flexmoney.projectfm.model.User;
 import com.flexmoney.projectfm.model.dto.UserDto;
 import com.flexmoney.projectfm.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +14,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/addUser")
-    public String addUser(@RequestBody User user){
-       return userService.addUser(user);
+    public String addUser(@RequestBody @Valid User user){
+        return userService.addUser(user);
     }
 
     @PostMapping("/addPaUser")
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{mobile}")
-    public String delete(@PathVariable Integer mobile) {
+    public String delete(@PathVariable String mobile) {
         return userService.deleteUser(mobile);
     }
 }

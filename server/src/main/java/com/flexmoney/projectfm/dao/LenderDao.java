@@ -8,6 +8,6 @@ import java.util.List;
 
 
 public interface LenderDao {
-    public List<Lender> fetchLenders(Integer mobile, BigDecimal amount);
+    public List<Lender> fetchLenders(String mobile, BigDecimal amount);
     public String fetchTenures(List<Lender> lenderList);
 }

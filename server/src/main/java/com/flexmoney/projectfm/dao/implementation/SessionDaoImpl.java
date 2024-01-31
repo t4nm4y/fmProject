@@ -20,7 +20,7 @@ public class SessionDaoImpl implements SessionDao {
     private PaUserLenderDao paUserLenderDao;
 
     @Override
-    public String initSession(Integer mobile, BigDecimal amount) {
+    public String initSession(String mobile, BigDecimal amount) {
         UUID session_id = UUID.randomUUID();
 
         MapSqlParameterSource params=new MapSqlParameterSource();
@@ -38,22 +38,23 @@ public class SessionDaoImpl implements SessionDao {
 
     @Override
     public boolean addTransactionId(UUID session_id, UUID transaction_id) {
+         try{
+             MapSqlParameterSource params=new MapSqlParameterSource();
+             params.addValue("session_id", session_id);
+             params.addValue("transaction_id", transaction_id);
 
-        MapSqlParameterSource params=new MapSqlParameterSource();
-        params.addValue("session_id", session_id);
-        params.addValue("transaction_id", transaction_id);
+             namedParameterJdbcTemplate.update(
+                     "UPDATE sessions " +
+                             "SET transaction_id = :transaction_id" +
+                             "WHERE session_id = :session_id",
+                     params);
 
-        int numRowsUpdated = namedParameterJdbcTemplate.update(
-                "UPDATE sessions " +
-                        "SET transaction_id = :transaction_id" +
-                        "WHERE session_id = :session_id",
-                params);
+             return true;
+             }
+             catch (Error e){
+                 return false;
+             }
 
-        if (numRowsUpdated > 0) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class PaUserLender {
-    private Integer mobile;
+    private String mobile;
     private Integer lender_id;
     private BigDecimal available_credit_limit;
     private BigDecimal credit_limit;

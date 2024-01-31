@@ -15,6 +15,6 @@ import java.util.UUID;
 public class Session {
     private UUID session_id;
     private UUID transaction_id;
-    private Integer mobile;
+    private String mobile;
     private BigDecimal amount;
 }

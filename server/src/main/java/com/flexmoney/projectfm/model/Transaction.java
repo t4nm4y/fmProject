@@ -1,5 +1,6 @@
 package com.flexmoney.projectfm.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +16,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class Transaction {
+    @NotNull
     private UUID transaction_id;
-    private Integer mobile;
+    private String mobile;
     private BigDecimal total_amount;
     private Date date_of_transaction;
     private Integer lender_id;

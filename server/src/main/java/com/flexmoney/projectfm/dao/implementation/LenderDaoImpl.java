@@ -28,7 +28,7 @@ public class LenderDaoImpl implements LenderDao {
 
 
     @Override
-    public List<Lender> fetchLenders(Integer mobile, BigDecimal amount) {
+    public List<Lender> fetchLenders(String mobile, BigDecimal amount) {
 
         MapSqlParameterSource params=new MapSqlParameterSource();
         params.addValue("mobile", mobile);

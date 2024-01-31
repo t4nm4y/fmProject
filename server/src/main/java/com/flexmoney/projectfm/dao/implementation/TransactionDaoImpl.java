@@ -25,7 +25,7 @@ public class TransactionDaoImpl implements TransactionDao {
     private PaUserLenderDao paUserLenderDao;
 
     @Override
-    public boolean setTransaction(UUID transaction_id, UUID lender_id, Integer tenure, BigDecimal interest_rate, Integer mobile, BigDecimal amount) {
+    public boolean setTransaction(UUID transaction_id, UUID lender_id, Integer tenure, BigDecimal interest_rate, String mobile, BigDecimal amount) {
         try {
             MapSqlParameterSource params= new MapSqlParameterSource();
             params.addValue("mobile", mobile);
@@ -42,14 +42,12 @@ public class TransactionDaoImpl implements TransactionDao {
             );
             return true;
         } catch (Exception e) {
-            // Handle exceptions here (e.g., log the error)
-            e.printStackTrace();
             return false;
         }
     }
 
     @Override
-    public boolean completeTwoFa(Integer mobile, Integer lender_id, String two_fa_value) {
+    public boolean completeTwoFa(String mobile, Integer lender_id, String two_fa_value) {
         String actual2Fa=paUserLenderDao.getTwoFaValue(mobile, lender_id);
         return two_fa_value==actual2Fa;
     }

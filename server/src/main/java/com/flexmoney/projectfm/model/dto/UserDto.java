@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class UserDto {
-    private Integer mobile;
+    private String mobile;
     private String first_name;
     private String last_name;
     private Integer lender_id;

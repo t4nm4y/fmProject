@@ -24,26 +24,25 @@ public class UserDaoImpl implements UserDao {
         params.addValue("first_name", user.getFirst_name());
         params.addValue("last_name", user.getLast_name());
 
+        System.out.println("\n\n\n\n\n\n"+params);
         return namedParameterJdbcTemplate.update(
-                "INSERT INTO users " +
-                        "(mobile, first_name, last_name) " +
-                        "VALUES (:mobile, :first_name, :last_name)",
-                params)
-        +" added Successfully ";
+                "INSERT INTO users (mobile, first_name, last_name) VALUES (:mobile, :first_name, :last_name)",
+                params) + " added Successfully ";
     }
 
     @Override
-    public String deleteUser(Integer mobile){
+    public String deleteUser(String mobile){
         MapSqlParameterSource params=new MapSqlParameterSource();
         params.addValue("mobile", mobile);
 
-        return namedParameterJdbcTemplate.update(
+        int res=namedParameterJdbcTemplate.update(
                 "DELETE FROM users " +
-                "WHERE mobile = :mobile", params) +
-                "Deleted Successfully";
+                "WHERE mobile = :mobile", params);
+        if(res==0) return "User doesn't exist!";
+        return "Deleted Successfully!";
     }
     @Override
-    public boolean doesUserExist(Integer mobile){
+    public boolean doesUserExist(String mobile){
         MapSqlParameterSource params=new MapSqlParameterSource();
         params.addValue("mobile", mobile);
 

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class Tenure {
-    private int lender_id;
-    private int tenure;
+    private Integer lender_id;
+    private Integer tenure;
     private BigDecimal interest_rate;
 }

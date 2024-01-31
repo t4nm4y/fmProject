@@ -24,19 +24,21 @@ import java.util.stream.Collectors;
 public class LenderDaoImpl implements LenderDao {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 
     @Override
     public List<Lender> fetchLenders(Integer mobile, BigDecimal amount) {
-        return jdbcTemplate.query(
+
+        MapSqlParameterSource params=new MapSqlParameterSource();
+        params.addValue("mobile", mobile);
+        params.addValue("amount", amount);
+
+        return namedParameterJdbcTemplate.query(
                 "SELECT * FROM lenders l " +
                         "JOIN pa_users p ON p.lender_id = l.lender_id " +
-                        "WHERE p.mobile = ? AND ? BETWEEN l.min_trans_limit AND l.max_trans_limit",
-                new BeanPropertyRowMapper<>(Lender.class), mobile, amount);
+                        "WHERE p.mobile = :mobile AND :amount BETWEEN l.min_trans_limit AND l.max_trans_limit",
+                params, new BeanPropertyRowMapper<>(Lender.class));
     }
 
     public String fetchTenures(List<Lender> lenderList) {

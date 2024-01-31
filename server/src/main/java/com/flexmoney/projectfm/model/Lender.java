@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 @Builder
 public class Lender {
     private Integer lender_id;
-    private BigDecimal min_trans_limit;
-    private BigDecimal max_trans_limit;
+    private BigDecimal min_transaction_limit;
+    private BigDecimal max_transaction_limit;
     private String two_fa_type;
     private String lender_name;
     private String icon_link;

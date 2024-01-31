@@ -16,11 +16,11 @@ import java.util.UUID;
 @Builder
 public class Transaction {
     private UUID transaction_id;
-    private int mobile;
+    private Integer mobile;
     private BigDecimal total_amount;
     private Date date_of_transaction;
-    private int lender_id;
-    private int tenure;
+    private Integer lender_id;
+    private Integer tenure;
     private BigDecimal interest_rate;
     private String status;
     private Time init_time;

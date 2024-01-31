@@ -1,10 +1,6 @@
 package com.flexmoney.projectfm.controller;
 
-import com.flexmoney.projectfm.dao.TransacSessionDao;
-import com.flexmoney.projectfm.model.PaUserLender;
-import com.flexmoney.projectfm.model.User;
 import com.flexmoney.projectfm.service.TransactionService;
-import com.flexmoney.projectfm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

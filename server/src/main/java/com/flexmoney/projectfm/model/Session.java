@@ -12,9 +12,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TransacSession {
-    private UUID sessionId;
-    private UUID transactionId;
-    private int mobile;
-    private BigDecimal totalAmount;
+public class Session {
+    private UUID session_id;
+    private UUID transaction_id;
+    private Integer mobile;
+    private BigDecimal amount;
 }

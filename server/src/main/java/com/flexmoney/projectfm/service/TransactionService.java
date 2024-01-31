@@ -17,11 +17,6 @@ import java.util.UUID;
 
 @Service
 public class TransactionService {
-    @Autowired
-    private UserDao usersDao;
-
-    @Autowired
-    private PaUserLenderDao paUserLenderDao;
 
     @Autowired
     private TransacSessionDao transacSessionDao;
@@ -29,25 +24,33 @@ public class TransactionService {
     @Autowired
     private LenderDao lenderDao;
 
-    public String addPaUser(PaUserLender paUserLender){
-        if(!usersDao.doesUserExist(paUserLender.getMobile())) return "User does not exist";
-        return paUserLenderDao.addPaLender(paUserLender)+"added successfully";
-    }
 
-    public String getLenders(Integer mobile, BigDecimal amount){
-        List<Lender> lenderList= lenderDao.fetchLenders(mobile, amount);
-//        return "here is the lenderList: "+lenderList;
+    public String getLenders(Integer mobile, BigDecimal amount) {
+        List<Lender> lenderList = lenderDao.fetchLenders(mobile, amount);
         return lenderDao.fetchTenures(lenderList);
     }
 
-    public String initSession(Integer mobile, BigDecimal amount){
+    public String initSession(Integer mobile, BigDecimal amount) {
         return transacSessionDao.initSession(mobile, amount);
     }
 
-    public String updateSession(UUID session_id, UUID transaction_id){
+    public String updateSession(UUID session_id, UUID transaction_id) {
         return transacSessionDao.updateSession(session_id, transaction_id);
     }
-    public boolean complete2Fa(Integer mobile, Integer lender_id, String two_fa_value){
+
+    public boolean complete2Fa(Integer mobile, Integer lender_id, String two_fa_value) {
         return transacSessionDao.completeTwoFa(mobile, lender_id, two_fa_value);
+    }
+
+    public boolean setTransaction(UUID session_id, UUID lender_id, Integer tenure, BigDecimal interest_rate) {
+        return transacSessionDao.setTransaction(session_id, lender_id, tenure, interest_rate);
+    }
+
+    public boolean otpVerification(Integer otp, UUID session_id) {
+        return transacSessionDao.otpVerification(otp, session_id);
+    }
+
+    public String sendSMS(UUID session_id){
+        return transacSessionDao.sendSMS(session_id);
     }
 }

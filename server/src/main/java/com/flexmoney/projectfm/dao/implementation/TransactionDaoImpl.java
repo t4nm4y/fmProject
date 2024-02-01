@@ -5,6 +5,7 @@ import com.flexmoney.projectfm.dao.TransactionDao;
 import com.flexmoney.projectfm.model.Session;
 import com.flexmoney.projectfm.model.Transaction;
 import com.flexmoney.projectfm.model.User;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,7 +26,7 @@ public class TransactionDaoImpl implements TransactionDao {
     private PaUserLenderDao paUserLenderDao;
 
     @Override
-    public boolean setTransaction(UUID transaction_id, UUID lender_id, Integer tenure, BigDecimal interest_rate, String mobile, BigDecimal amount) {
+    public boolean setTransaction(UUID transaction_id, Integer lender_id, Integer tenure, BigDecimal interest_rate, String mobile, BigDecimal amount) {
         try {
             MapSqlParameterSource params= new MapSqlParameterSource();
             params.addValue("mobile", mobile);

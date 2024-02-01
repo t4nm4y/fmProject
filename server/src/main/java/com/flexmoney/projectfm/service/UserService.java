@@ -4,7 +4,6 @@ import com.flexmoney.projectfm.dao.PaUserLenderDao;
 import com.flexmoney.projectfm.dao.UserDao;
 import com.flexmoney.projectfm.model.PaUserLender;
 import com.flexmoney.projectfm.model.User;
-import com.flexmoney.projectfm.model.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

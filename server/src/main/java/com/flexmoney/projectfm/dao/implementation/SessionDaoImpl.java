@@ -2,6 +2,7 @@ package com.flexmoney.projectfm.dao.implementation;
 
 import com.flexmoney.projectfm.dao.PaUserLenderDao;
 import com.flexmoney.projectfm.dao.SessionDao;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -20,54 +21,32 @@ public class SessionDaoImpl implements SessionDao {
     private PaUserLenderDao paUserLenderDao;
 
     @Override
-    public String initSession(String mobile, BigDecimal amount) {
-        UUID session_id = UUID.randomUUID();
+    public String initSession(String mobile, BigDecimal amount, HttpSession session) {
 
-        MapSqlParameterSource params=new MapSqlParameterSource();
-        params.addValue("session_id", session_id);
-        params.addValue("mobile", mobile);
-        params.addValue("amount", amount);
-
-        return namedParameterJdbcTemplate.update(
-                "INSERT INTO sessions " +
-                        "(session_id, mobile, amount) " +
-                        "VALUES (:session_id, :mobile, :amount)",
-                params)
-        +" created Successfully ";
+        String session_id = (String) session.getAttribute("session_id");
+        if (session_id == null) {
+            session_id = UUID.randomUUID().toString();
+            session.setAttribute("session_id", session_id);
+        }
+        session.setAttribute("mobile", mobile);
+        session.setAttribute("amount", amount);
+        return "Session initiated successfully!";
     }
 
-    @Override
-    public boolean addTransactionId(UUID session_id, UUID transaction_id) {
-         try{
-             MapSqlParameterSource params=new MapSqlParameterSource();
-             params.addValue("session_id", session_id);
-             params.addValue("transaction_id", transaction_id);
-
-             namedParameterJdbcTemplate.update(
-                     "UPDATE sessions " +
-                             "SET transaction_id = :transaction_id" +
-                             "WHERE session_id = :session_id",
-                     params);
-
-             return true;
-             }
-             catch (Error e){
-                 return false;
-             }
-
-    }
 
     @Override
-    public boolean cancelSession(UUID session_id) {
+    public boolean cancelSession(HttpSession session) {
         try{
             MapSqlParameterSource params=new MapSqlParameterSource();
-            params.addValue("session_id", session_id);
+//            params.addValue("session_id", session_id);
+//
+//            UUID transaction_id =namedParameterJdbcTemplate.queryForObject(
+//                    "SELECT transaction_id FROM sessions " +
+//                            "WHERE session_id= :session_id",
+//                    params, UUID.class
+//            );
 
-            UUID transaction_id =namedParameterJdbcTemplate.queryForObject(
-                    "SELECT transaction_id FROM sessions " +
-                            "WHERE session_id= :session_id",
-                    params, UUID.class
-            );
+            UUID transaction_id=(UUID) session.getAttribute("transaction_id");
 
             params.addValue("transaction_id", transaction_id);
 
@@ -77,6 +56,9 @@ public class SessionDaoImpl implements SessionDao {
                             "WHERE transaction_id= :transaction_id",
                     params
             );
+
+            session.invalidate();
+
             return true;
         } catch(Error e){
             return false;

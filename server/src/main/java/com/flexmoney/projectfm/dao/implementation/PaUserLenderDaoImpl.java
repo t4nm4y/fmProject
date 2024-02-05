@@ -1,16 +1,14 @@
 package com.flexmoney.projectfm.dao.implementation;
 
-import com.flexmoney.projectfm.dao.PaUserLenderDao;
+import com.flexmoney.projectfm.dao.IPaUserLenderDao;
 import com.flexmoney.projectfm.model.PaUserLender;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PaUserLenderDaoImpl implements PaUserLenderDao {
+public class PaUserLenderDaoImpl implements IPaUserLenderDao {
     @Autowired
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -41,5 +39,17 @@ public class PaUserLenderDaoImpl implements PaUserLenderDao {
             return namedParameterJdbcTemplate.queryForObject(
                     "SELECT two_fa_value FROM pa_users WHERE mobile=:mobile AND lender_id=:lender_id",
                     params, String.class);
+    }
+
+    @Override
+    public String deletePaUser(String mobile){
+        MapSqlParameterSource params=new MapSqlParameterSource();
+        params.addValue("mobile", mobile);
+
+        int res=namedParameterJdbcTemplate.update(
+                "DELETE FROM pa_users " +
+                        "WHERE mobile = :mobile", params);
+        if(res==0) return "User doesn't exist!";
+        return "Deleted Successfully!";
     }
 }

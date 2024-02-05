@@ -2,16 +2,21 @@ package com.flexmoney.projectfm.controller;
 
 import com.flexmoney.projectfm.model.PaUserLender;
 import com.flexmoney.projectfm.model.User;
-import com.flexmoney.projectfm.model.dto.UserDto;
 import com.flexmoney.projectfm.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 public class UserController {
+
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService=userService;
+    }
 
     @PostMapping("/addUser")
     public String addUser(@RequestBody @Valid User user){

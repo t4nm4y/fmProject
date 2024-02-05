@@ -16,10 +16,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class Transaction {
+//    @JsonProperty("transaction_id")
     @NotNull
     private UUID transaction_id;
     private String mobile;
-    private BigDecimal total_amount;
+    private BigDecimal totalAmount;
     private Date date_of_transaction;
     private Integer lender_id;
     private Integer tenure;

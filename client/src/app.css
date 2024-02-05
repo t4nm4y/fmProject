@@ -1,25 +1,65 @@
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+
+.heading{
+	color: var(--fm-secondary);
+	padding-bottom: 1em;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.preact:hover {
-  filter: drop-shadow(0 0 2em #673ab8aa);
+form {
+	display: flex;
+	gap:1.2em;
+	flex-direction: column;
 }
 
-.card {
-  padding: 2em;
+.wrap{
+	margin-bottom: 1em;
+}
+.subHeading{
+	color: var(--fm-text);
+	font-weight: bolder;
+	text-align: left;
+	padding: 0;
+	margin: 0;
+}
+.icon{
+	height: 2em;
+	margin-top: -5px;
+}
+.menuItem{
+	font-size: 1.3em;
+	margin: 0;
+	padding: 0;
+}
+.backBtn{
+	font-size: 1em;
+	font-weight: 700;
+	border: none;
+	margin-right: 0.5em;
+	cursor: pointer;
+	background-color: var(--fm-error-shade-0);
+	
 }
 
-.read-the-docs {
-  color: #888;
+
+header {
+	display: flex;
+	justify-content: flex-end;
+	background-color: var(--fm-secondary-shade-5);
+}
+
+header nav {
+	display: flex;
+}
+
+header a {
+	color: #fff;
+	padding: 0.75rem;
+	/* text-decoration: underline; */
+}
+
+header a.active {
+	background-color: rgba(0, 0, 0, 0.463);
+}
+
+header a:hover {
+	background-color: rgba(0, 0, 0, 0.282);
 }

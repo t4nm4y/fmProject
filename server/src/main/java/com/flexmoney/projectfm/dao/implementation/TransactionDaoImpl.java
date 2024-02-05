@@ -1,14 +1,11 @@
 package com.flexmoney.projectfm.dao.implementation;
 
-import com.flexmoney.projectfm.dao.PaUserLenderDao;
-import com.flexmoney.projectfm.dao.TransactionDao;
-import com.flexmoney.projectfm.model.Session;
+import com.flexmoney.projectfm.dao.IPaUserLenderDao;
+import com.flexmoney.projectfm.dao.ITransactionDao;
 import com.flexmoney.projectfm.model.Transaction;
 import com.flexmoney.projectfm.model.User;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,13 +14,13 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Repository
-public class TransactionDaoImpl implements TransactionDao {
+public class TransactionDaoImpl implements ITransactionDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
-    private PaUserLenderDao paUserLenderDao;
+    private IPaUserLenderDao IPaUserLenderDao;
 
     @Override
     public boolean setTransaction(UUID transaction_id, Integer lender_id, Integer tenure, BigDecimal interest_rate, String mobile, BigDecimal amount) {
@@ -49,13 +46,13 @@ public class TransactionDaoImpl implements TransactionDao {
 
     @Override
     public boolean completeTwoFa(String mobile, Integer lender_id, String two_fa_value) {
-        String actual2Fa=paUserLenderDao.getTwoFaValue(mobile, lender_id);
+        String actual2Fa= IPaUserLenderDao.getTwoFaValue(mobile, lender_id);
         return two_fa_value==actual2Fa;
     }
 
 
     @Override
-    public boolean otpVerification(Integer otp, UUID transaction_id) {
+    public boolean otpVerification(Integer otp, UUID transaction_id, String mobile, BigDecimal amount) {
 
         //update the code later to allow 3 retries.
             MapSqlParameterSource params= new MapSqlParameterSource();
@@ -71,7 +68,18 @@ public class TransactionDaoImpl implements TransactionDao {
             );
             return false;
         }
-
+        Integer lender_id = namedParameterJdbcTemplate.queryForObject(
+                "SELECT lender_id FROM transactions WHERE transaction_id = :transaction_id",
+                params, new BeanPropertyRowMapper<>(Integer.class)
+        );
+        params.addValue("lender_id", lender_id);
+        params.addValue("amount", amount);
+        namedParameterJdbcTemplate.update(
+                "UPDATE pa_users " +
+                        "SET available_credit_limit=available_credit_limit-:amount " +
+                        "WHERE lender_id=:lender_id AND mobile=:mobile",
+                params
+        );
         namedParameterJdbcTemplate.update(
                 "UPDATE transactions " +
                         "SET status=completed " +
@@ -100,7 +108,7 @@ public class TransactionDaoImpl implements TransactionDao {
         );
 
         String sms="Hi "+user.getFirst_name()+" "+user.getLast_name()+
-                ", Your payment of INR "+transaction.getTotal_amount() +
+                ", Your payment of INR "+transaction.getTotalAmount() +
                 "has been successful!\n";
         return sms;
     }

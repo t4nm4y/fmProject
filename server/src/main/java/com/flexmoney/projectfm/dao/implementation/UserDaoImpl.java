@@ -1,17 +1,14 @@
 package com.flexmoney.projectfm.dao.implementation;
 
-import com.flexmoney.projectfm.dao.UserDao;
+import com.flexmoney.projectfm.dao.IUserDao;
 import com.flexmoney.projectfm.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
-
 @Repository
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl implements IUserDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -25,9 +22,11 @@ public class UserDaoImpl implements UserDao {
         params.addValue("last_name", user.getLast_name());
 
         System.out.println("\n\n\n\n\n\n"+params);
-        return namedParameterJdbcTemplate.update(
+        int res=namedParameterJdbcTemplate.update(
                 "INSERT INTO users (mobile, first_name, last_name) VALUES (:mobile, :first_name, :last_name)",
-                params) + " added Successfully ";
+                params);
+        if(res==1) return "User added successfully!";
+        return "Error";
     }
 
     @Override
@@ -52,6 +51,6 @@ public class UserDaoImpl implements UserDao {
                 Integer.class
         );
 
-        return count != null && count > 0;
+        return count > 0;
     }
 }
